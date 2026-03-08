@@ -13,7 +13,11 @@ Text {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: clock.text = japanDateFMT(clock)
+        onTriggered: {
+            let fmt = japanDateFMT(clock)
+            if (fmt)
+                clock.text = fmt
+        }
     }
 
 

@@ -9,7 +9,8 @@ import QtQuick.Controls
 import qs.utils
 
 Item {
-    anchors.verticalCenter: parent.verticalCenter
+    //anchors.verticalCenter: parent.verticalCenter
+    Layout.alignment: Qt.AlignVCenter
     implicitWidth: panel.width
     implicitHeight: panel.height
 
@@ -21,17 +22,23 @@ Item {
         Text {
             text: "System Info"
             color: "#7aa2f7"
-            font { family: "JetBrainsMono Nerd Font"; pixelSize: 14; bold: true }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onEntered: {
-                dropdownPopup.visible = true
+            font {
+                family: "JetBrainsMono Nerd Font";
+                pixelSize: 14;
+                bold: true
             }
-            onExited: {
-                dropdownPopup.visible = false
+
+            MouseArea {
+                width: panel.width
+                height: panel.height
+                
+                hoverEnabled: true
+                onEntered: {
+                    dropdownPopup.visible = true
+                }
+                onExited: {
+                    dropdownPopup.visible = false
+                }
             }
         }
     }
@@ -60,7 +67,7 @@ Item {
 
                 Text { text: "CPU: " + Math.floor(ResourceUsage.cpuUsage * 100) + "%"; color: "#e0af68"; font.pixelSize: 14 }
                 Text { text: "Mem: " + Math.floor(ResourceUsage.memoryUsedPercentage * 100) + "%"; color: "#0db9d7"; font.pixelSize: 14 }
-                Text { text: "Clock: " + clock.text; color: "#7aa2f7"; font.pixelSize: 14 }
+                //Text { text: "Clock: " + clock.text; color: "#7aa2f7"; font.pixelSize: 14 }
             }
         }
     }

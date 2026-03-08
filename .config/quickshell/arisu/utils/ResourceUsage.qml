@@ -60,6 +60,8 @@ Singleton {
         updateCpuUsageHistory()
     }
 
+    // TODO: investigate on a way to avoid having 
+    // to double run to get first stats
 	Timer {
 		interval: 1
         running: true 
@@ -94,7 +96,9 @@ Singleton {
             }
 
             root.updateHistories()
-            interval = /*Config.options?.resources?.updateInterval ?? */3000
+
+            if (interval == 1) interval = 2
+            else interval = /*Config.options?.resources?.updateInterval ?? */3000
         }
 	}
 

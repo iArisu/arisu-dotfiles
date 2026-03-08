@@ -6,6 +6,11 @@ import Quickshell
 
 
 Singleton {
+    readonly property color computer_metrics_fg: '#000000'
+    readonly property color computer_metrics_bg: '#455983'
+    readonly property color computer_metrics_fill: '#a6bef1'
+    readonly property color computer_metrics_text: '#e1eaff'
+    
     readonly property color colWorkspaceSwitcher_fg: "#ffffff"
     readonly property color colWorkspaceSwitcher_active_fg: "#ffffff"
     readonly property color colWorkspaceSwitcher_bg: "#313d57"

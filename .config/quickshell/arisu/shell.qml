@@ -65,55 +65,64 @@ PanelWindow {
     
         RowLayout {
             id: wkSelector
-            anchors.centerIn: parent //padding
-            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.top: parent.top
             anchors.margins: 4
+            height: parent.height
             spacing: 0
 
+            Item { Layout.preferredWidth: 12 }
             Item {
-                Layout.preferredWidth: 12
-            }
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                Layout.fillHeight: true
 
-            Column {
-                spacing: -4
-                //anchors.centerIn: parent
-                Text {
-                    text: StringTrim.ellipsis(root.activeWindow?.appId ?? "", 64)
-                    color: "gray"
-                    font.bold: true
+                Column {
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: parent.height
+                    spacing: -4
+                    //anchors.centerIn: parent
+                    Text {
+                        text: StringTrim.ellipsis(root.activeWindow?.appId ?? "", 64)
+                        color: "gray"
+                        font.bold: true
+                    }
+
+                    Text {
+                        text: StringTrim.ellipsis(root.activeWindow?.title ?? "", 70)
+                        color: "white"
+                        font.pixelSize: 14
+                        verticalAlignment: Text.AlignTop
+                    }
                 }
-
-                Text {
-                    text: StringTrim.ellipsis(root.activeWindow?.title ?? "", 70)
-                    color: "white"
-                    font.pixelSize: 14
-                    verticalAlignment: Text.AlignTop
-                }
             }
+        }
 
+
+        RowLayout {
+            anchors.centerIn: parent
+            spacing: 0
             WorkspaceChooser {
-                anchors.centerIn: parent //padding
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            }
+        }
+
+        RowLayout {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.fillHeight: true
+            spacing: 0
+            
+            MetricsChip {
+                percentage: ResourceUsage.cpuUsage
+                icon: "earthquake"
             }
 
-            Item { Layout.fillWidth: true }
+            Item { Layout.preferredWidth: 12 }
 
-            // CPU Text
-            Text {
-                id: cpuText
-                text: "CPU: " + Math.floor(ResourceUsage.cpuUsage * 100) + "%"
-                color: root.colYellow
-                font { family: Appearance.fontFamily; pixelSize: Appearance.fontSize; bold: true }
-            }
-            Item { Layout.preferredWidth: 10 }
-            Rectangle { width: 1; height: 16; color: root.colMuted }
-            Item { Layout.preferredWidth: 10 }
-
-            // Memory Text
-            Text {
-                id: memText
-                text: "Mem: " + Math.floor(ResourceUsage.memoryUsedPercentage * 100) + "%"
-                color: root.colCyan
-                font { family: Appearance.fontFamily; pixelSize: Appearance.fontSize; bold: true }
+            MetricsChip {
+                percentage: ResourceUsage.memoryUsedPercentage
+                icon: "memory"
             }
 
             Item { Layout.preferredWidth: 10 }
@@ -129,6 +138,7 @@ PanelWindow {
 
             PerformancePopup {}
 
+            Item { Layout.preferredWidth: 6 }
             Rectangle {
                 height: 24
                 width: 24
@@ -153,10 +163,7 @@ PanelWindow {
                 }
             }
 
-            Item {
-                Layout.preferredWidth: 6
-            }
+            Item { Layout.preferredWidth: 8 }
         }
     }
-
 }
