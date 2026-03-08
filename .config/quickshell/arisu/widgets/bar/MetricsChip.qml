@@ -36,9 +36,10 @@ RowLayout {
                     ctx.reset()
                     ctx.clearRect(0, 0, width, height)
 
-                    const centerX = metrics_chip.width / 2
-                    const centerY = metrics_chip.height / 2
                     const radius = metrics_chip.width / 2
+                    const centerX = radius //metrics_chip.width / 2
+                    const centerY = radius //metrics_chip.height / 2
+                    
 
                     const startAngle = -Math.PI / 2
                     const endAngle = startAngle + (metrics_chip_root.percentage) * 2 * Math.PI // clockwise

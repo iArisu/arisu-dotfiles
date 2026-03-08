@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# -----------------------
+# Colors
+# -----------------------
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+success() { echo -e "${GREEN}[OK]${NC} $1"; }
+warning() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+# -----------------------
+# Paths
+# -----------------------
+HYPR_DIR="$HOME/.config/hypr"
+HYPR_CONF="$HYPR_DIR/hyprland.conf"
+QUICKSHELL_DIR="$HOME/.config/quickshell/arisu"
+REPO_DIR="$(pwd)/.config"
+
+# -----------------------
+# Script overview
+# -----------------------
+echo -e "${YELLOW}This script will:${NC}"
+echo -e "  1. Install required packages."
+echo -e "  2. Backup your existing hyprland.conf."
+echo -e "  3. Create symlinks for:"
+echo -e "     - ~/.config/hypr -> $REPO_DIR/hypr"
+echo -e "     - ~/.config/quickshell/arisu -> $REPO_DIR/quickshell/arisu"
+echo -e "  4. Abort if ~/.config/hypr is already a symlink and ~/.config/quickshell/arisu exists.\n"
+
+read -p "Do you want to continue? (y/n) " proceed
+if [[ ! "$proceed" =~ ^[Yy]$ ]]; then
+    info "Aborted by user."
+    exit 0
+fi
+
+# -----------------------
+# Package installation
+# -----------------------
+read -p "About to install required packages (hyprland, kitty, etc.), proceed? (y/n) " install_pkgs
+if [[ "$install_pkgs" =~ ^[Yy]$ ]]; then
+    info "Updating package lists..."
+    sudo pacman -Syu --noconfirm
+    info "Installing packages..."
+    sudo pacman -S hyprland kitty --noconfirm
+    yay --aur quickshell-git
+    success "Packages installed."
+else
+    error "Abort."
+    exit 1
+fi
+
+# -----------------------
+# Check existing symlinks
+# -----------------------
+if [[ -L "$HYPR_DIR" && -d "$QUICKSHELL_DIR" ]]; then
+    error "Both ~/.config/hypr is a symlink and ~/.config/quickshell/arisu exists."
+    exit 1
+fi
+
+# -----------------------
+# Backup hyprland.conf
+# -----------------------
+if [[ -f "$HYPR_CONF" ]]; then
+    timestamp=$(date +%Y%m%d%H%M%S)
+    read -p "Backup $HYPR_CONF to ${HYPR_CONF}.bak.$timestamp? (y/n) " resp
+    if [[ "$resp" =~ ^[Yy]$ ]]; then
+        mv "$HYPR_CONF" "$HYPR_CONF.bak.$timestamp"
+        success "Backup created: $HYPR_CONF.bak.$timestamp"
+    else
+        warning "Skipping backup."
+    fi
+fi
+
+# -----------------------
+# Create symlinks
+# -----------------------
+read -p "Link $REPO_DIR/quickshell/arisu -> $QUICKSHELL_DIR? (y/n) " resp
+if [[ "$resp" =~ ^[Yy]$ ]]; then
+    mkdir -p "$(dirname "$QUICKSHELL_DIR")"
+    ln -sfn "$REPO_DIR/quickshell/arisu" "$QUICKSHELL_DIR"
+    success "Symlink created: $QUICKSHELL_DIR -> $REPO_DIR/quickshell/arisu"
+else
+    warning "Skipped linking quickshell/arisu."
+fi
+
+read -p "Link $REPO_DIR/hypr -> $HYPR_DIR? (y/n) " resp
+if [[ "$resp" =~ ^[Yy]$ ]]; then
+    mkdir -p "$(dirname "$HYPR_DIR")"
+    ln -sfn "$REPO_DIR/hypr" "$HYPR_DIR"
+    success "Symlink created: $HYPR_DIR -> $REPO_DIR/hypr"
+else
+    warning "Skipped linking hypr."
+fi
+
+info "Script finished."

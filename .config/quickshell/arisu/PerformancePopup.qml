@@ -19,8 +19,9 @@ Item {
         anchors.margins: 8
         spacing: 12
         
+        // TODO: either delete or merge with "metrics chips"
         Text {
-            text: "System Info"
+            text: "システム情報"
             color: "#7aa2f7"
             font {
                 family: "JetBrainsMono Nerd Font";
