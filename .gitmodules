@@ -1,0 +1,3 @@
+[submodule ".config/quickshell/arisu/modules/external/overview"]
+	path = .config/quickshell/arisu/modules/external/overview
+	url = https://github.com/Shanu-Kumawat/quickshell-overview.git
