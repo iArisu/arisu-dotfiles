@@ -1,0 +1,1 @@
+bash ~/.config/fish/conf.d/pikachu.sh
