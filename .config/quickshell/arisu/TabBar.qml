@@ -20,14 +20,20 @@ PanelWindow {
         left: true
         right: true
     }
+
+    property real targetY: detachedTopBar ? 10 : 0
     
     margins {
         left: 0
-        top: 0
+        top: Animations.nearQML(targetY)
         right: 0
         bottom: 0
     }
 
+    Behavior on targetY {
+        NumberAnimation { duration: 50; easing.type: Easing.InOutQuad; }
+    }
+    
     property bool detachedTopBar: false
 
 
@@ -56,23 +62,37 @@ PanelWindow {
     Item {
         anchors.fill: parent
 
-        anchors.leftMargin: detachedTopBar ? 10 : 0
+        property real targetMargin: detachedTopBar ? 10 : 0
+
+        anchors.leftMargin: Animations.nearQML(targetMargin)
         anchors.topMargin: 0
-        anchors.rightMargin: detachedTopBar ? 10 : 0
+        anchors.rightMargin: Animations.nearQML(targetMargin)
         anchors.bottomMargin: 0
 
+        Behavior on targetMargin {
+            NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+        }
+
+        
         Rectangle {
+            property real targetCornerRadius: detachedTopBar ? 64 : 0
+            property real targetCornerRadius_fix: Animations.nearQML(targetCornerRadius)
+            
             anchors.centerIn: parent //padding
             anchors.fill: parent
-            radius: detachedTopBar ? 64 : 0         // Corner radius
+            radius: targetCornerRadius_fix
             color: Appearance.topbar_bg
+
+            Behavior on targetCornerRadius {
+                NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+            }
         }
         
-        Item {
+        Item {            
             anchors.fill: parent
-            anchors.leftMargin: 10
+            anchors.leftMargin: 0
             anchors.topMargin: 0
-            anchors.rightMargin: 10
+            anchors.rightMargin: 0
             anchors.bottomMargin: 0
             Rectangle {
                 anchors.centerIn: parent //padding

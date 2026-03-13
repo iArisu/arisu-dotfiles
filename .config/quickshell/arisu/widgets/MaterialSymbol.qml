@@ -1,10 +1,16 @@
 import QtQuick
 
+import qs.utils
+
 StyledText {
     id: root
     property real iconSize: 16
     property real fill: 0
-    property real truncatedFill: fill.toFixed(1) // Reduce memory consumption spikes from constant font remapping
+
+    // Reduce memory consumption spikes from constant font remapping
+    //property real truncatedFill: fill.toFixed(1)
+    property real truncatedFill: Animations.nearQML(fill) // seems better
+
     renderType: Text.NativeRendering
     font {
         hintingPreference: Font.PreferNoHinting

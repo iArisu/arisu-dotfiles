@@ -15,13 +15,22 @@ import qs.utils
 import qs
 
 ShellRoot {
+    id: root
     Overview {}
 
     property bool with_detachedTopBar: false
 
-    Loader {
-        active: !with_detachedTopBar
-        source: "RoundedCorners.qml"
+    // to test
+    /*Timer {
+        id: resetCornersTimer
+        interval: 2000
+        running: true
+        repeat: true
+        onTriggered: root.with_detachedTopBar = !root.with_detachedTopBar
+    }*/
+
+    RoundedCorners {
+        withRoundedCorners: !with_detachedTopBar
     }
 
 
