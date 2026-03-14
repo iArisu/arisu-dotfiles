@@ -12,51 +12,6 @@ import qs.services
 Item {
     id: root
 
-    property var windowByAddress: HyprlandData.windowByAddress
-
-    property var iconsPaths: []
-
-    function updateIcons() {
-        const newIcons = [...iconsPaths]  // clone current array
-
-        ToplevelManager.toplevels.values.forEach(tl => {
-            if (!tl || !tl.appId || !tl.HyprlandToplevel.address) return;
-
-            const address = `0x${tl.HyprlandToplevel.address}`
-            const win = windowByAddress[address]
-            const wid = win?.workspace?.id
-            if (!wid) return
-
-            const entry = DesktopEntries.heuristicLookup(tl.appId)
-            const iconPath = Quickshell.iconPath(
-                entry?.icon ?? "application-x-executable",
-                "image-missing"
-            )
-
-            // Only update if changed
-            if (newIcons[wid - 1] !== iconPath) {
-                newIcons[wid - 1] = iconPath
-                console.log(Date.now(), "Updating icon:", tl.appId, address, wid)
-            }
-        })
-
-        // Apply only actual changes
-        iconsPaths = [...newIcons];
-    }
-    
-    Component.onCompleted: {
-        updateIcons()
-    }
-
-    Connections {
-        // Listen for changes to the top-level windows
-        target: ToplevelManager.toplevels
-
-        function onValuesChanged() {
-            updateIcons()
-        }
-    }
-
     implicitHeight: wkRow.implicitHeight + 4
     implicitWidth: wkRow.implicitWidth + 4
 
@@ -98,27 +53,14 @@ Item {
 
             Item {
                 id: wsBox
-                required property int index
+                required property var model
+                property int index: model.index
+                
+                property var biggestWindow: HyprlandData.biggestWindowForWorkspace(index + 1)
 
-                property string currentIcon: ""
                 property bool active: GlobalState.wschooser_selected_ws === (index + 1)
                 property bool longPress: GlobalState.key_workspaceNumberLongPress
                 //property bool hovered: false
-
-                Connections {
-                    target: root
-                    
-                    function onIconsPathsChanged() {
-                        const newIcon = root.iconsPaths[index] ?? ""
-                        if (newIcon !== wsBox.currentIcon) {
-                            wsBox.currentIcon = newIcon
-                        }
-                    }
-                }
-
-                Component.onCompleted: {
-                    wsBox.currentIcon = root.iconsPaths[index] ?? ""
-                }
                 
                 width: 24
                 height: 24
@@ -151,7 +93,7 @@ Item {
                         Appearance.colWorkspaceSwitcher_dot_active :
                         Appearance.colWorkspaceSwitcher_dot
                     opacity: wsBox.longPress ? 0 : 1
-                    visible: root.iconsPaths[index] == undefined
+                    visible: biggestWindow == null
 
                     Behavior on opacity {
                         NumberAnimation {
@@ -170,7 +112,7 @@ Item {
                         width: 24
                         height: 24
                         radius: 64
-                        visible: root.iconsPaths[index] != undefined
+                        visible: biggestWindow != null
                         color: Appearance.colWorkspaceSwitcher_icon_bg
 
                         opacity: wsBox.longPress ? 1 : 0
@@ -197,11 +139,15 @@ Item {
                     }
 
                     Image {
+                        id: image
                         anchors.margins: 1
                         height: 24
                         width: 24
-                        visible: currentIcon != ""
-                        source: currentIcon
+                        visible: biggestWindow !== null
+                        source: Quickshell.iconPath(
+                            DesktopEntries.byId(biggestWindow?.class)?.icon ?? "application-x-executable",
+                            "image-missing"
+                        )
 
                         y: wsBox.longPress ? 10 : 0
                         x: wsBox.longPress ? 10 : 0
