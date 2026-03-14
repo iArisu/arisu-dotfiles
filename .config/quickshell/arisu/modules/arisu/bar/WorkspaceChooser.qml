@@ -55,8 +55,9 @@ Item {
                 id: wsBox
                 required property var model
                 property int index: model.index
+                property int realIndex: index + GlobalState.wschooser_ws_page * Config.wschooser_ws_per_page
                 
-                property var biggestWindow: HyprlandData.biggestWindowForWorkspace(index + 1)
+                property var biggestWindow: HyprlandData.biggestWindowForWorkspace(realIndex + 1)
 
                 property bool active: GlobalState.wschooser_selected_ws === (index + 1)
                 property bool longPress: GlobalState.key_workspaceNumberLongPress
@@ -140,7 +141,6 @@ Item {
 
                     Image {
                         id: image
-                        anchors.margins: 1
                         height: 24
                         width: 24
                         visible: biggestWindow !== null
@@ -149,8 +149,8 @@ Item {
                             "image-missing"
                         )
 
-                        y: wsBox.longPress ? 10 : 0
-                        x: wsBox.longPress ? 10 : 0
+                        y: wsBox.longPress ? 10 : parent.height / 2 - height / 2
+                        x: wsBox.longPress ? 10 : parent.width / 2 - width / 2
                         scale: wsBox.longPress ? 0.75 : 1
                         
                         Behavior on scale {
@@ -173,8 +173,8 @@ Item {
                     //onEntered: wsBox.hovered = true
                     //onExited: wsBox.hovered = false
                     onClicked: {
-                        if (Hyprland.focusedWorkspace?.id != index + 1) {
-                            Hyprland.dispatch("workspace " + (index + 1))
+                        if (Hyprland.focusedWorkspace?.id != realIndex + 1) {
+                            Hyprland.dispatch("workspace " + (realIndex + 1))
                         }
                     }
                 }
