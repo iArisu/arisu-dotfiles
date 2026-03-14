@@ -3,6 +3,7 @@ import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
+import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Controls
 
@@ -31,7 +32,7 @@ Item {
         color: Appearance.colWorkspaceSwitcher_active_bg
 
         y: (parent.height - height) / 2
-        x: ((GlobalState.wschooser_selected_ws - 1) % Config.wschooser_ws_per_page + 1) * 28 - 28 + 2 // padding, see Item implicitWidth+4
+        x: ((GlobalState.wschooser_selected_ws - 1) % Config.wschooser_ws_per_page) * 28 + 2 // padding, see Item implicitWidth+4
 
 
         Behavior on x {
@@ -42,6 +43,12 @@ Item {
         }
     }
 
+    component SmoothAnim: NumberAnimation {
+        duration: 200;
+        easing.type: Easing.InOutCubic
+    }
+
+    
     RowLayout {
         id: wkRow
         spacing: 4
@@ -49,7 +56,6 @@ Item {
 
         Repeater {
             model: Config.wschooser_ws_per_page
-
 
             Item {
                 id: wsBox
@@ -68,19 +74,14 @@ Item {
 
                 Text {                    
                     anchors.centerIn: parent
-                    text: wsBox.longPress ? ((GlobalState.wschooser_ws_page * Config.wschooser_ws_per_page) + index + 1) : ""
+                    text: realIndex + 1
                     color: wsBox.active ? 
                         Appearance.colWorkspaceSwitcher_active_fg :
                         Appearance.colWorkspaceSwitcher_fg
                     font: Appearance.defaultFont_bold
                     opacity: wsBox.longPress ? 1 : 0
 
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: 200;
-                            easing.type: Easing.InOutCubic
-                        }
-                    }
+                    Behavior on opacity { SmoothAnim {} }
                 }
 
 
@@ -96,74 +97,62 @@ Item {
                     opacity: wsBox.longPress ? 0 : 1
                     visible: biggestWindow == null
 
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: 200;
-                            easing.type: Easing.InOutCubic
-                        }
-                    }
+                    Behavior on opacity { SmoothAnim {} }
                 }
+                
+                
                 
                 Item {
                     width: 24
                     height: 24
                     clip: false  // allow overflow
+                    visible: biggestWindow != null
 
-                    Rectangle {
-                        width: 24
-                        height: 24
+                    /*Rectangle {
+                        width: 26
+                        height: 26
                         radius: 64
-                        visible: biggestWindow != null
-                        color: Appearance.colWorkspaceSwitcher_icon_bg
+                        color: Appearance.colWorkspaceSwitcher_active_bg
 
                         opacity: wsBox.longPress ? 1 : 0
 
-                        y: wsBox.longPress ? 10 : 0
-                        x: wsBox.longPress ? 10 : 0
-                        scale: wsBox.longPress ? 0.8 : 1
+                        y: wsBox.longPress ? 9 : 0
+                        x: wsBox.longPress ? 9 : 0
+                        scale: wsBox.longPress ? 0.7 : 1
                         
-                        Behavior on scale {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
-
-                        Behavior on x {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
-            
-                        Behavior on y {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
-
-                        Behavior on opacity {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
-                    }
+                        Behavior on scale { SmoothAnim {} }
+                        Behavior on x { SmoothAnim {} }
+                        Behavior on y { SmoothAnim {} }
+                        Behavior on opacity { SmoothAnim {} }
+                    }*/
 
                     Image {
-                        id: image
-                        height: 24
-                        width: 24
-                        visible: biggestWindow !== null
+                        id: icon
+                        height: 20
+                        width: 20
+                        visible: false // multi effect
                         source: Quickshell.iconPath(
                             DesktopEntries.byId(biggestWindow?.class)?.icon ?? "application-x-executable",
                             "image-missing"
                         )
 
-                        y: wsBox.longPress ? 10 : parent.height / 2 - height / 2
-                        x: wsBox.longPress ? 10 : parent.width / 2 - width / 2
-                        scale: wsBox.longPress ? 0.75 : 1
-                        
-                        Behavior on scale {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
+                        y: wsBox.longPress ? 12 : parent.height / 2 - height / 2
+                        x: wsBox.longPress ? 12 : parent.width / 2 - width / 2
 
-                        Behavior on x {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
-            
-                        Behavior on y {
-                            NumberAnimation { duration: 200; easing.type: Easing.InOutCubic }
-                        }
+                        Behavior on x { SmoothAnim {} }
+                        Behavior on y { SmoothAnim {} }
+                    }
+
+                    MultiEffect {
+                        anchors.fill: icon
+                        source: icon
+
+                        colorization: wsBox.longPress ? 0.5 : 1.0
+                        colorizationColor: Appearance.colWorkspaceSwitcher_icon_tint
+                        scale: wsBox.longPress ? 0.85 : 1
+                        
+                        Behavior on colorization { SmoothAnim {} }
+                        Behavior on scale { SmoothAnim {} }
                     }
                 }
                 

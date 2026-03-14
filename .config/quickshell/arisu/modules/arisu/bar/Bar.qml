@@ -146,9 +146,9 @@ PanelWindow {
 
                     Rectangle { width: 1; height: 16; color: Appearance.colMuted }
 
-                    PerformancePopup {
+                    /*PerformancePopup {
                         rootWindow: root
-                    }
+                    }*/
 
                     ButtonChip {
                         icon: "settings"

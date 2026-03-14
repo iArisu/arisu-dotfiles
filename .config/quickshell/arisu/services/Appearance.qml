@@ -6,6 +6,7 @@ import Quickshell
 
 
 Singleton {
+    // TODO: MDY colors
     readonly property color computer_metrics_fg: '#000000'
     readonly property color computer_metrics_bg: '#455983'
     readonly property color computer_metrics_fill: '#a6bef1'
@@ -16,13 +17,15 @@ Singleton {
     readonly property color colWorkspaceSwitcher_fg: "#7c96ce"
     readonly property color colWorkspaceSwitcher_active_fg: "#ffffff"
     readonly property color colWorkspaceSwitcher_bg: "#313d57"
-    readonly property color colWorkspaceSwitcher_active_bg: "#4d659a"
+    readonly property color colWorkspaceSwitcher_active_bg: '#86a8f2'
     readonly property color colWorkspaceSwitcher_icon_bg: '#313d57'
+    readonly property color colWorkspaceSwitcher_icon_tint: '#af78a3ff'
 
     readonly property color topbar_bg: "#1a1b26"
 
     readonly property string fontFamily: "JetBrainsMono Nerd Font"
     readonly property int fontSize: 14
+    
     property font defaultFont: Qt.font({
         family: Appearance.fontFamily,
         pixelSize: Appearance.fontSize,
