@@ -173,7 +173,9 @@ Item {
                     //onEntered: wsBox.hovered = true
                     //onExited: wsBox.hovered = false
                     onClicked: {
-                        Hyprland.dispatch("workspace " + (index + 1))
+                        if (Hyprland.focusedWorkspace?.id != index + 1) {
+                            Hyprland.dispatch("workspace " + (index + 1))
+                        }
                     }
                 }
             }
