@@ -1,7 +1,7 @@
 import Quickshell
 import QtQuick
 
-import qs.visuals
+import qs.services
 
 // Clock
 Text {

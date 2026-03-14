@@ -1,6 +1,6 @@
 import QtQuick
 
-import qs.utils
+import qs.modules.common.functions
 
 StyledText {
     id: root

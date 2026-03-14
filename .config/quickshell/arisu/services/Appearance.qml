@@ -17,6 +17,7 @@ Singleton {
     readonly property color colWorkspaceSwitcher_active_fg: "#ffffff"
     readonly property color colWorkspaceSwitcher_bg: "#313d57"
     readonly property color colWorkspaceSwitcher_active_bg: "#4d659a"
+    readonly property color colWorkspaceSwitcher_icon_bg: '#313d57'
 
     readonly property color topbar_bg: "#1a1b26"
 

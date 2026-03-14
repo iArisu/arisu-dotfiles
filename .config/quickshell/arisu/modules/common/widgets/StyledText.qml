@@ -1,6 +1,6 @@
 import QtQuick
 
-import qs.visuals
+import qs.services
 
 Text {
     id: root

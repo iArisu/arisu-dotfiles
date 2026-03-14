@@ -6,8 +6,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import qs.utils
-import qs.visuals
+import qs.services
 
 Item {
     id: root

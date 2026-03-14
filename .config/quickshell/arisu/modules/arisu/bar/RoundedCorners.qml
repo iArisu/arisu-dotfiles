@@ -2,8 +2,7 @@ import Quickshell
 import QtQuick
 import Qt5Compat.GraphicalEffects
 
-import qs.visuals 
-import qs.utils
+import qs.services
 
 PanelWindow {
     id: root

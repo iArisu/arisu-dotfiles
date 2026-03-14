@@ -5,8 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import qs.widgets
-import qs.visuals
+import qs.services
 
 RowLayout {
     id: root
@@ -18,10 +17,12 @@ RowLayout {
     required property real percentage
     required property string icon
 
+    property var last_percentage: null // to avoid too many repaints
     spacing: 5
 
     Rectangle {
         id: metrics_chip
+
         height: 24
         width: 24
         radius: 64
@@ -63,6 +64,7 @@ RowLayout {
                 }
             }
         }
+        
         MaterialSymbol {
             anchors.centerIn: parent
             iconSize: 18
@@ -78,5 +80,10 @@ RowLayout {
         font: Appearance.defaultFont_bold
     }
 
-    onPercentageChanged: canvas.requestPaint()
+    onPercentageChanged: {
+        if (last_percentage == null || Math.abs(percentage - last_percentage) > 0.1) {
+            last_percentage = percentage
+            canvas.requestPaint()
+        }
+    }
 }

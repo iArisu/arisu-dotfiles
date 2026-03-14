@@ -1,18 +1,13 @@
-import "./modules/external/overview/modules/overview"
-
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 
-import qs.widgets.bar
-import qs.widgets
-import qs.visuals
-import qs.utils
-import qs
+
+import qs.modules.arisu.bar
+import qs.modules.external.overview.modules.overview
 
 ShellRoot {
     id: root
@@ -28,5 +23,5 @@ ShellRoot {
     }*/
 
     RoundedCorners {}
-    TabBar {}
+    Bar {}
 }

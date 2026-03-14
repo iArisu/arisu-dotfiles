@@ -6,10 +6,9 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import qs.widgets.bar
-import qs.widgets
-import qs.visuals
-import qs.utils
+import qs.modules.common.functions
+import qs.modules.common.widgets
+import qs.services
 
 PanelWindow {
     id: root
@@ -52,12 +51,11 @@ PanelWindow {
         
         Rectangle {
             property real targetCornerRadius: GlobalState.topbar_detached ? 64 : 0
-            property real targetCornerRadius_fix: Animations.nearQML(targetCornerRadius)
             
             anchors.centerIn: parent //padding
             anchors.fill: parent
 
-            radius: targetCornerRadius_fix
+            radius: Animations.nearQML(targetCornerRadius)
             color: Appearance.topbar_bg
 
             Behavior on targetCornerRadius {
@@ -156,8 +154,7 @@ PanelWindow {
                         icon: "settings"
                         Layout.rightMargin: 12
                         onClicked: function onClicked() {
-                            console.log(Quickshell.shellPath("Settings.qml"))
-                            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("Settings.qml")]);
+                            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("modules/settings/Settings.qml")]);
                         }
                     }
                 }

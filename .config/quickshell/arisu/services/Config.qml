@@ -10,5 +10,4 @@ Singleton {
     id: root
     
     property int wschooser_ws_per_page: 10
-    
 }
