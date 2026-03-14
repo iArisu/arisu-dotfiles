@@ -3,7 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 ApplicationWindow {
-    id: mainWindow
+    id: root
+    
     visible: true
     width: 1100
     height: 750

@@ -18,23 +18,15 @@ ShellRoot {
     id: root
     Overview {}
 
-    property bool with_detachedTopBar: false
-
     // to test
     /*Timer {
         id: resetCornersTimer
         interval: 2000
         running: true
         repeat: true
-        onTriggered: root.with_detachedTopBar = !root.with_detachedTopBar
+        onTriggered: GlobalState.topbar_detached = !GlobalState.topbar_detached
     }*/
 
-    RoundedCorners {
-        withRoundedCorners: !with_detachedTopBar
-    }
-
-
-    TabBar {
-        detachedTopBar: with_detachedTopBar
-    }
+    RoundedCorners {}
+    TabBar {}
 }

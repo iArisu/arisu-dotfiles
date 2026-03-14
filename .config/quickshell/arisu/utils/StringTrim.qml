@@ -5,6 +5,8 @@ import QtQuick
 import Quickshell
 
 Singleton {
+    id: root
+    
     function ellipsis(str, max) {
         if (!str || String(str) !== str) return str;
 

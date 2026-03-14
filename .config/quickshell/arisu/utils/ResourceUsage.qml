@@ -12,6 +12,7 @@ import Quickshell.Io
  */
 Singleton {
     id: root
+    
 	property real memoryTotal: 1
 	property real memoryFree: 0
 	property real memoryUsed: memoryTotal - memoryFree

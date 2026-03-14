@@ -9,21 +9,26 @@ import qs.widgets
 import qs.visuals
 
 RowLayout {
-    id: metrics_chip_root
-    spacing: 5
+    id: root
 
-    property real percentage
-    property string icon
+    readonly property color primaryColor: Appearance.computer_metrics_text
+    readonly property color secondaryColor: Appearance.computer_metrics_fg
+    readonly property color backgroundColor: Appearance.computer_metrics_bg
+
+    required property real percentage
+    required property string icon
+
+    spacing: 5
 
     Rectangle {
         id: metrics_chip
         height: 24
         width: 24
-        color: Appearance.computer_metrics_bg
         radius: 64
 
+        color: backgroundColor
+
         Item {
-            id: tm
             width: metrics_chip.width
             height: metrics_chip.height
 
@@ -42,7 +47,7 @@ RowLayout {
                     
 
                     const startAngle = -Math.PI / 2
-                    const endAngle = startAngle + (metrics_chip_root.percentage) * 2 * Math.PI // clockwise
+                    const endAngle = startAngle + (root.percentage) * 2 * Math.PI // clockwise
 
                     // Draw background circle
                     /*ctx.beginPath()
@@ -61,16 +66,16 @@ RowLayout {
         MaterialSymbol {
             anchors.centerIn: parent
             iconSize: 18
-            text: metrics_chip_root.icon
-            color: Appearance.computer_metrics_fg
+            text: root.icon
+            color: secondaryColor
         }
     }
 
     Text {
         id: metrics_chip_text
-        text: String(Math.floor(metrics_chip_root.percentage * 100)).padEnd(2, " ")
-        color: Appearance.computer_metrics_text
-        font { family: Appearance.fontFamily; pixelSize: Appearance.fontSize; bold: true }
+        text: String(Math.floor(root.percentage * 100)).padEnd(2, " ")
+        color: primaryColor
+        font: Appearance.defaultFont_bold
     }
 
     onPercentageChanged: canvas.requestPaint()

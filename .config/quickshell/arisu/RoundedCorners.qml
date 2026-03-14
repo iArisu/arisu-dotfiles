@@ -3,6 +3,7 @@ import QtQuick
 import Qt5Compat.GraphicalEffects
 
 import qs.visuals 
+import qs.utils
 
 PanelWindow {
     id: root
@@ -24,7 +25,6 @@ PanelWindow {
     }
     color: "transparent"
 
-    property bool withRoundedCorners: false
 
     Rectangle {
         id: bgRect
@@ -36,8 +36,8 @@ PanelWindow {
 
         visible: true
 
-        property int targetRadius: root.withRoundedCorners ? 30 : 0
-        property int targetRadiusAnimation: root.withRoundedCorners ? 50 : 300   // appear 0.3s, disappear 0.1s
+        property int targetRadius: !GlobalState.topbar_detached ? 30 : 0
+        property int targetRadiusAnimation: !GlobalState.topbar_detached ? 50 : 300   // appear 0.3s, disappear 0.1s
 
         layer.effect: OpacityMask {
             invert: true

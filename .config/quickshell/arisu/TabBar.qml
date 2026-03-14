@@ -13,60 +13,36 @@ import qs.utils
 
 PanelWindow {
     id: root
+
+    readonly property Toplevel activeWindow: ToplevelManager.activeToplevel
+    property real targetY: GlobalState.topbar_detached ? 10 : 0
+
     implicitHeight: 40
     aboveWindows: false
-    anchors {
-        top: true
-        left: true
-        right: true
-    }
 
-    property real targetY: detachedTopBar ? 10 : 0
-    
-    margins {
-        left: 0
-        top: Animations.nearQML(targetY)
-        right: 0
-        bottom: 0
-    }
+    anchors.top: true
+    anchors.left: true
+    anchors.right: true
+
+    margins.top: Animations.nearQML(targetY)
+    margins.left: 0
+    margins.right: 0
+    margins.bottom: 0
+
+    color: "transparent"
 
     Behavior on targetY {
         NumberAnimation { duration: 50; easing.type: Easing.InOutQuad; }
     }
-    
-    property bool detachedTopBar: false
 
-
-    property color colBg: "#1a1b26"
-    property color colFg: "#a9b1d6"
-    property color colMuted: "#444b6a"
-    property color colCyan: "#0db9d7"
-    property color colBlue: "#7aa2f7"
-    property color colYellow: "#e0af68"
-
-    property int cpuUsage: 0
-    property int memUsage: 0
-    property var lastCpuIdle: 0
-    property var lastCpuTotal: 0
-    property int updateInterval: 2
-
-    property int workspacesPerPage: 10
-    property int selectedWorkspace: Hyprland.focusedWorkspace?.id ?? 1
-    property int workspacePage: Math.trunc((selectedWorkspace - 1) / workspacesPerPage)
-
-
-    
-    readonly property Toplevel activeWindow: ToplevelManager.activeToplevel
-    color: "transparent"
 
     Item {
+        property real targetMargin: GlobalState.topbar_detached ? 10 : 0
+
         anchors.fill: parent
-
-        property real targetMargin: detachedTopBar ? 10 : 0
-
         anchors.leftMargin: Animations.nearQML(targetMargin)
-        anchors.topMargin: 0
         anchors.rightMargin: Animations.nearQML(targetMargin)
+        anchors.topMargin: 0
         anchors.bottomMargin: 0
 
         Behavior on targetMargin {
@@ -75,11 +51,12 @@ PanelWindow {
 
         
         Rectangle {
-            property real targetCornerRadius: detachedTopBar ? 64 : 0
+            property real targetCornerRadius: GlobalState.topbar_detached ? 64 : 0
             property real targetCornerRadius_fix: Animations.nearQML(targetCornerRadius)
             
             anchors.centerIn: parent //padding
             anchors.fill: parent
+
             radius: targetCornerRadius_fix
             color: Appearance.topbar_bg
 
@@ -91,25 +68,28 @@ PanelWindow {
         Item {            
             anchors.fill: parent
             anchors.leftMargin: 0
-            anchors.topMargin: 0
             anchors.rightMargin: 0
+            anchors.topMargin: 0
             anchors.bottomMargin: 0
+
             Rectangle {
-                anchors.centerIn: parent //padding
                 anchors.fill: parent
+                anchors.centerIn: parent //padding
                 color: "transparent"
                 z: 1
             
                 RowLayout {
                     id: wkSelector
+                    
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.margins: 4
+                    
                     height: parent.height
                     spacing: 0
 
-                    Item { Layout.preferredWidth: 12 }
                     Item {
+                        Layout.leftMargin: 16
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         Layout.fillHeight: true
 
@@ -144,63 +124,42 @@ PanelWindow {
                 }
 
                 RowLayout {
+                    id: rightBar
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     Layout.fillHeight: true
-                    spacing: 0
+                    spacing: 12
                     
                     MetricsChip {
                         percentage: ResourceUsage.cpuUsage
                         icon: "earthquake"
                     }
 
-                    Item { Layout.preferredWidth: 12 }
 
                     MetricsChip {
                         percentage: ResourceUsage.memoryUsedPercentage
                         icon: "memory"
                     }
 
-                    Item { Layout.preferredWidth: 10 }
-                    Rectangle { width: 1; height: 16; color: root.colMuted }
-                    Item { Layout.preferredWidth: 10 }
-
+                    Rectangle { width: 1; height: 16; color: Appearance.colMuted }
 
                     JapaneseDate {}
 
-                    Item { Layout.preferredWidth: 10 }
-                    Rectangle { width: 1; height: 16; color: root.colMuted }
-                    Item { Layout.preferredWidth: 10 }
+                    Rectangle { width: 1; height: 16; color: Appearance.colMuted }
 
-                    PerformancePopup {}
-
-                    Item { Layout.preferredWidth: 6 }
-                    Rectangle {
-                        height: 24
-                        width: 24
-                        color: Appearance.colWorkspaceSwitcher_bg
-                        radius: 64
-
-                        MaterialSymbol {
-                            anchors.centerIn: parent
-                            iconSize: 18
-                            text: "settings"
-                            color: Appearance.colWorkspaceSwitcher_fg
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            height: 20
-                            width: 20
-                            onClicked: {
-                                console.log(Quickshell.shellPath("Settings.qml"))
-                                Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("Settings.qml")]);
-                            }
-                        }
+                    PerformancePopup {
+                        rootWindow: root
                     }
 
-                    Item { Layout.preferredWidth: 8 }
+                    ButtonChip {
+                        icon: "settings"
+                        Layout.rightMargin: 12
+                        onClicked: function onClicked() {
+                            console.log(Quickshell.shellPath("Settings.qml"))
+                            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("Settings.qml")]);
+                        }
+                    }
                 }
             }
         }

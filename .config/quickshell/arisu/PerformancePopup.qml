@@ -7,9 +7,12 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 import qs.utils
+import qs.visuals
 
 Item {
+    id: root
     //anchors.verticalCenter: parent.verticalCenter
+    required property var rootWindow
     Layout.alignment: Qt.AlignVCenter
     implicitWidth: panel.width
     implicitHeight: panel.height
@@ -23,11 +26,7 @@ Item {
         Text {
             text: "システム情報"
             color: "#7aa2f7"
-            font {
-                family: "JetBrainsMono Nerd Font";
-                pixelSize: 14;
-                bold: true
-            }
+            font: Appearance.defaultFont_bold
 
             MouseArea {
                 width: panel.width
@@ -46,9 +45,9 @@ Item {
 
     PopupWindow {
         id: dropdownPopup
-        anchor.window: root
-        anchor.rect.x: root.width - 200
-        anchor.rect.y: root.height + 10
+        anchor.window: rootWindow
+        anchor.rect.x: rootWindow.width - 200
+        anchor.rect.y: rootWindow.height + 10
         implicitWidth: 200
         implicitHeight: 100
         visible: false
