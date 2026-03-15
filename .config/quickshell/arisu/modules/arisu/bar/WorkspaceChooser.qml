@@ -59,15 +59,13 @@ Item {
 
             Item {
                 id: wsBox
-                required property var model
-                property int index: model.index
+                required property int index
                 property int realIndex: index + GlobalState.wschooser_ws_page * Config.wschooser_ws_per_page
                 
                 property var biggestWindow: HyprlandData.biggestWindowForWorkspace(realIndex + 1)
 
                 property bool active: GlobalState.wschooser_selected_ws === (index + 1)
                 property bool longPress: GlobalState.key_workspaceNumberLongPress
-                //property bool hovered: false
                 
                 width: 24
                 height: 24
@@ -102,65 +100,41 @@ Item {
                 
                 
                 
-                Item {
-                    width: 24
-                    height: 24
-                    clip: false  // allow overflow
+                Image {
+                    id: icon
+                    width: 20
+                    height: 20
+
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    
+                    cache: false // up to debate 
                     visible: biggestWindow != null
 
-                    /*Rectangle {
-                        width: 26
-                        height: 26
-                        radius: 64
-                        color: Appearance.colWorkspaceSwitcher_active_bg
+                    source: Quickshell.iconPath(
+                        DesktopEntries.byId(biggestWindow?.class)?.icon ?? "application-x-executable",
+                        "image-missing"
+                    )
 
-                        opacity: wsBox.longPress ? 1 : 0
+                    y: wsBox.longPress ? 12 : parent.height / 2 - height / 2
+                    x: wsBox.longPress ? 12 : parent.width / 2 - width / 2
+                    scale: wsBox.longPress ? 0.85 : 1
+                    
+                    Behavior on x { SmoothAnim {} }
+                    Behavior on y { SmoothAnim {} }
+                    Behavior on scale { SmoothAnim {} }
 
-                        y: wsBox.longPress ? 9 : 0
-                        x: wsBox.longPress ? 9 : 0
-                        scale: wsBox.longPress ? 0.7 : 1
-                        
-                        Behavior on scale { SmoothAnim {} }
-                        Behavior on x { SmoothAnim {} }
-                        Behavior on y { SmoothAnim {} }
-                        Behavior on opacity { SmoothAnim {} }
-                    }*/
-
-                    Image {
-                        id: icon
-                        height: 20
-                        width: 20
-                        visible: false // multi effect
-                        source: Quickshell.iconPath(
-                            DesktopEntries.byId(biggestWindow?.class)?.icon ?? "application-x-executable",
-                            "image-missing"
-                        )
-
-                        y: wsBox.longPress ? 12 : parent.height / 2 - height / 2
-                        x: wsBox.longPress ? 12 : parent.width / 2 - width / 2
-
-                        Behavior on x { SmoothAnim {} }
-                        Behavior on y { SmoothAnim {} }
-                    }
-
-                    MultiEffect {
-                        anchors.fill: icon
-                        source: icon
-
+                    layer.enabled: true
+                    layer.effect: MultiEffect {
                         colorization: wsBox.longPress ? 0.5 : 1.0
                         colorizationColor: Appearance.colWorkspaceSwitcher_icon_tint
-                        scale: wsBox.longPress ? 0.85 : 1
                         
                         Behavior on colorization { SmoothAnim {} }
-                        Behavior on scale { SmoothAnim {} }
                     }
                 }
                 
                 MouseArea {
                     anchors.fill: parent
-                    //hoverEnabled: true
-                    //onEntered: wsBox.hovered = true
-                    //onExited: wsBox.hovered = false
                     onClicked: {
                         if (Hyprland.focusedWorkspace?.id != realIndex + 1) {
                             Hyprland.dispatch("workspace " + (realIndex + 1))
