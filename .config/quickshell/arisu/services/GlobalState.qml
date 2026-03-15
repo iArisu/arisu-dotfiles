@@ -15,7 +15,7 @@ Singleton {
     property bool key_workspaceNumber: false
     property bool key_workspaceNumberLongPress: false
 
-    property bool topbar_detached: false
+    
     
     property int wschooser_selected_ws: Hyprland.focusedWorkspace?.id ?? 1
     property int wschooser_ws_page: Math.trunc((root.wschooser_selected_ws - 1) / Config.wschooser_ws_per_page)

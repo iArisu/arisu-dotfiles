@@ -98,9 +98,18 @@ Item {
                     Behavior on opacity { SmoothAnim {} }
                 }
                 
-                
-                
-                Image {
+
+                Loader {
+                    id: iconLoader
+                    anchors.centerIn: parent
+
+                    width: 20
+                    height: 20
+                    active: biggestWindow != null
+                    sourceComponent: IconComponent {}
+                }
+
+                component IconComponent : Image {      
                     id: icon
                     width: 20
                     height: 20

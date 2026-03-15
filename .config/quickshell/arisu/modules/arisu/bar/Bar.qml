@@ -14,7 +14,7 @@ PanelWindow {
     id: root
 
     readonly property Toplevel activeWindow: ToplevelManager.activeToplevel
-    property real targetY: GlobalState.topbar_detached ? 10 : 0
+    property real targetY: Config.topbar_detached ? 10 : 0
 
     implicitHeight: 40
     aboveWindows: false
@@ -36,7 +36,7 @@ PanelWindow {
 
 
     Item {
-        property real targetMargin: GlobalState.topbar_detached ? 10 : 0
+        property real targetMargin: Config.topbar_detached ? 10 : 0
 
         anchors.fill: parent
         anchors.leftMargin: Animations.nearQML(targetMargin)
@@ -50,7 +50,7 @@ PanelWindow {
 
         
         Rectangle {
-            property real targetCornerRadius: GlobalState.topbar_detached ? 64 : 0
+            property real targetCornerRadius: Config.topbar_detached ? 64 : 0
             
             anchors.centerIn: parent //padding
             anchors.fill: parent

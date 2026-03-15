@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 
 
+import qs.services
 import qs.modules.arisu.bar
 import qs.modules.external.overview.modules.overview
 
@@ -19,7 +20,7 @@ ShellRoot {
         interval: 2000
         running: true
         repeat: true
-        onTriggered: GlobalState.topbar_detached = !GlobalState.topbar_detached
+        onTriggered: Config.topbar_detached = !Config.topbar_detached
     }*/
 
     RoundedCorners {}

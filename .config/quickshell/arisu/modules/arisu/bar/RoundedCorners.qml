@@ -35,8 +35,8 @@ PanelWindow {
 
         visible: true
 
-        property int targetRadius: !GlobalState.topbar_detached ? 30 : 0
-        property int targetRadiusAnimation: !GlobalState.topbar_detached ? 50 : 300   // appear 0.3s, disappear 0.1s
+        property int targetRadius: !Config.topbar_detached ? 30 : 0
+        property int targetRadiusAnimation: !Config.topbar_detached ? 50 : 300   // appear 0.3s, disappear 0.1s
 
         layer.effect: OpacityMask {
             invert: true
