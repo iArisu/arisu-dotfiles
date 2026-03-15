@@ -4,8 +4,11 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 
 import qs.services
+import qs.modules.common.functions
 
 RowLayout {
     id: root
@@ -17,7 +20,8 @@ RowLayout {
     required property real percentage
     required property string icon
 
-    property var last_percentage: null // to avoid too many repaints
+    // one decimal more for precision? seems to be required to reach 0
+    property real percentageStable: Animations.nearQML(percentage, 3)
     spacing: 5
 
     Rectangle {
@@ -30,38 +34,38 @@ RowLayout {
         color: backgroundColor
 
         Item {
+            id: circleBar
+            
+            property real percentageGPUFriendly: Math.max(0.0001, Math.min(0.9999, percentageStable))
+
             width: metrics_chip.width
             height: metrics_chip.height
 
-            Canvas {
-                id: canvas
+            Rectangle {
+                id: circleMask
                 anchors.fill: parent
+                radius: width / 2
+                visible: false
+            }
 
-                onPaint: {
-                    var ctx = getContext("2d")
-                    ctx.reset()
-                    ctx.clearRect(0, 0, width, height)
+            ConicalGradient {
+                id: gradient
+                anchors.fill: parent
+                angle: 0
+                visible: false
 
-                    const radius = metrics_chip.width / 2
-                    const centerX = radius //metrics_chip.width / 2
-                    const centerY = radius //metrics_chip.height / 2
-                    
-
-                    const startAngle = -Math.PI / 2
-                    const endAngle = startAngle + (root.percentage) * 2 * Math.PI // clockwise
-
-                    // Draw background circle
-                    /*ctx.beginPath()
-                    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
-                    ctx.fillStyle = '#eee'
-                    ctx.fill()*/
-
-                    ctx.beginPath()
-                    ctx.arc(centerX, centerY, radius, startAngle, endAngle, false)
-                    ctx.fillStyle = Appearance.computer_metrics_fill
-                    ctx.lineTo(centerX, centerY)
-                    ctx.fill()
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: Appearance.computer_metrics_fill }
+                    GradientStop { position: circleBar.percentageGPUFriendly; color: Appearance.computer_metrics_fill }
+                    GradientStop { position: circleBar.percentageGPUFriendly + 0.001; color: "transparent" }
+                    GradientStop { position: 1.0; color: "transparent" }
                 }
+            }
+
+            OpacityMask {
+                anchors.fill: parent
+                source: gradient
+                maskSource: circleMask
             }
         }
         
@@ -75,15 +79,8 @@ RowLayout {
 
     Text {
         id: metrics_chip_text
-        text: String(Math.floor(root.percentage * 100)).padEnd(2, " ")
+        text: String(Math.floor(root.percentageStable * 100)).padEnd(2, " ")
         color: primaryColor
         font: Appearance.defaultFont_bold
-    }
-
-    onPercentageChanged: {
-        if (last_percentage == null || Math.abs(percentage - last_percentage) > 0.1) {
-            last_percentage = percentage
-            canvas.requestPaint()
-        }
     }
 }

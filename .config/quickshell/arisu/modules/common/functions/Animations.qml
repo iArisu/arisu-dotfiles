@@ -9,7 +9,8 @@ import Quickshell.Io
 Singleton {
     id: root
     
-    function nearQML(val) {
-        return Math.round(val*10)/10;
+    function nearQML(val, dec = 1) {
+        const fac = 10**dec;
+        return Math.round(val*fac)/fac;
     }
 }
