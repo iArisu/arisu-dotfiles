@@ -9,6 +9,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 
+import qs.modules.settings
 import qs.modules.common.functions
 import qs.modules.common.widgets
 import qs.services
@@ -193,9 +194,18 @@ PanelWindow {
 
                     ButtonChip {
                         icon: "settings"
+                        Layout.rightMargin: -6
+                        onClicked: function onClicked() {
+                            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("settings.qml")]);
+                        }
+                    }
+                    
+                    ButtonChip {
+                        icon: "restart_alt"
+                        iconSize: 22
                         Layout.rightMargin: 12
                         onClicked: function onClicked() {
-                            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("modules/settings/Settings.qml")]);
+                            
                         }
                     }
                 }

@@ -14,12 +14,12 @@
 
 ## Using
 Note: you need to delete previous folder / symlinks at
-`~/.config/hypr` and `~/.config/quicksell/arisu`
+`~/.config/hypr`, `~/.config/quicksell/arisu`, ...
 
 ```shell
 $ git clone https://github.com/Chaikew/arisus-dotfiles ~/arisus-dotfiles
 
-$ sudo pacman -S hyprland kitty fuzzel dolphin chafa --noconfirm
+$ sudo pacman -S hyprland kitty fuzzel dolphin chafa flameshot zenity --noconfirm
 
 $ yay --aur quickshell-git awww
 

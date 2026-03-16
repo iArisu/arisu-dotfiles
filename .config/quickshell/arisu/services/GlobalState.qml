@@ -23,7 +23,7 @@ Singleton {
 
     Timer {
         id: holdTimer
-        interval: 250
+        interval: 150
         running: false
         repeat: false
         onTriggered: {

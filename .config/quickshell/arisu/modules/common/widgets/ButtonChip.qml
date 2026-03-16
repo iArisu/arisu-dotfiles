@@ -13,6 +13,7 @@ Rectangle {
 
     required property string icon
     required property var onClicked
+    property int iconSize: 18
 
     readonly property color primaryColor: Appearance.colWorkspaceSwitcher_fg
     readonly property color backgroundColor: Appearance.colWorkspaceSwitcher_bg
@@ -25,7 +26,7 @@ Rectangle {
 
     MaterialSymbol {
         anchors.centerIn: parent
-        iconSize: 18
+        iconSize: root.iconSize
         text: icon
         color: primaryColor
     }
