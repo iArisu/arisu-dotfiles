@@ -2,9 +2,12 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Hyprland
+import Quickshell.Services.SystemTray
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
 
 import qs.modules.common.functions
 import qs.modules.common.widgets
@@ -138,6 +141,38 @@ PanelWindow {
                     MetricsChip {
                         percentage: ResourceUsage.memoryUsedPercentage
                         icon: "memory"
+                    }
+
+                    Rectangle { width: 1; height: 16; color: Appearance.colMuted }
+
+                    Row {
+                        spacing: 10
+                        Repeater {
+                            model: SystemTray.items
+
+                            delegate: Item {
+                                width: 24
+                                height: 24
+                                Image {
+                                    anchors.fill: parent
+                                    anchors.centerIn: parent
+
+                                    source: modelData.icon
+                                    sourceSize.width: width
+                                    sourceSize.height: height
+                                    
+                                    cache: false // up to debate 
+                                    visible: true
+                                }
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        Qt.callLater(() => modelData.activate())
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     Rectangle { width: 1; height: 16; color: Appearance.colMuted }

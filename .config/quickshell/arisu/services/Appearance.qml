@@ -12,16 +12,17 @@ Singleton {
     readonly property color computer_metrics_fill: '#a6bef1'
     readonly property color computer_metrics_text: '#e1eaff'
     
+    readonly property color colWorkspaceSwitcher_bg: '#2f2f4f'
+    
     readonly property color colWorkspaceSwitcher_dot: '#7c96ce'
     readonly property color colWorkspaceSwitcher_dot_active: '#e1eaff'
     readonly property color colWorkspaceSwitcher_fg: "#7c96ce"
     readonly property color colWorkspaceSwitcher_active_fg: "#ffffff"
-    readonly property color colWorkspaceSwitcher_bg: "#313d57"
     readonly property color colWorkspaceSwitcher_active_bg: '#86a8f2'
     readonly property color colWorkspaceSwitcher_icon_bg: '#313d57'
     readonly property color colWorkspaceSwitcher_icon_tint: '#af78a3ff'
 
-    readonly property color topbar_bg: "#1a1b26"
+    readonly property color topbar_bg: '#101018'
 
     readonly property string fontFamily: "JetBrainsMono Nerd Font"
     readonly property int fontSize: 14
