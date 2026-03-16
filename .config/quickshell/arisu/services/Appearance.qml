@@ -22,6 +22,8 @@ Singleton {
     readonly property color colWorkspaceSwitcher_icon_bg: '#313d57'
     readonly property color colWorkspaceSwitcher_icon_tint: '#af78a3ff'
 
+    readonly property color sysTray_icon_tint: '#af76a2ff'
+
     readonly property color topbar_bg: '#101018'
 
     readonly property string fontFamily: "JetBrainsMono Nerd Font"

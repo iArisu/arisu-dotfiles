@@ -3,11 +3,11 @@ import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
-import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Controls
 
 
+import qs.modules.common.widgets
 import qs.services
 
 Item {
@@ -134,11 +134,11 @@ Item {
                     Behavior on scale { SmoothAnim {} }
 
                     layer.enabled: true
-                    layer.effect: MultiEffect {
-                        colorization: wsBox.longPress ? 0.5 : 1.0
-                        colorizationColor: Appearance.colWorkspaceSwitcher_icon_tint
-                        
-                        Behavior on colorization { SmoothAnim {} }
+                    layer.effect: ColorTintEffect {
+                        tint: Appearance.colWorkspaceSwitcher_icon_tint
+                        apply: !wsBox.longPress
+                        enabled_force: 1
+                        disabled_force: 0.8
                     }
                 }
                 

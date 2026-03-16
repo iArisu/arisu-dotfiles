@@ -163,12 +163,18 @@ PanelWindow {
                                     
                                     cache: false // up to debate 
                                     visible: true
+
+                                    layer.enabled: true
+                                    layer.effect: ColorTintEffect {
+                                        tint: Appearance.sysTray_icon_tint
+                                        enabled_force: 0.4
+                                    }
                                 }
 
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
-                                        Qt.callLater(() => modelData.activate())
+                                        Qt.callLater(() => modelData.activate()) // up to debate
                                     }
                                 }
                             }

@@ -24,6 +24,8 @@ $ sudo pacman -S hyprland kitty fuzzel dolphin chafa --noconfirm
 $ yay --aur quickshell-git awww
 
 $ ln -s $(readlink -fs ~/arisus-dotfiles/.config/fish/) ~/.config/
-$ ln -s $(readlink -fs ~/arisus-dotfiles/.config/quickshell/arisu/) ~/.config/quickshell/
 $ ln -s $(readlink -fs ~/arisus-dotfiles/.config/hypr/) ~/.config/
+$ ln -s $(readlink -fs ~/arisus-dotfiles/.config/flameshot/) ~/.config/
+$ ln -s $(readlink -fs ~/arisus-dotfiles/.config/fuzzel/) ~/.config/
+$ ln -s $(readlink -fs ~/arisus-dotfiles/.config/quickshell/arisu/) ~/.config/quickshell/
 ```
