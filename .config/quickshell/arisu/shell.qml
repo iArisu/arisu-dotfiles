@@ -26,5 +26,5 @@ ShellRoot {
     RoundedCorners {}
     Bar {}
 
-    Settings {} // See rules.conf
+    //Settings {} // See rules.conf
 }

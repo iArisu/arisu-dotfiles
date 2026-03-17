@@ -20,6 +20,8 @@ RowLayout {
     required property real percentage
     required property string icon
 
+    property int iconSize: 24
+
     // one decimal more for precision? seems to be required to reach 0
     property real percentageStable: Animations.nearQML(percentage, 3)
     spacing: 5
@@ -27,8 +29,8 @@ RowLayout {
     Rectangle {
         id: metrics_chip
 
-        height: 24
-        width: 24
+        height: iconSize
+        width: iconSize
         radius: 64
 
         color: backgroundColor
@@ -38,8 +40,8 @@ RowLayout {
             
             property real percentageGPUFriendly: Math.max(0.0001, Math.min(0.9999, percentageStable))
 
-            width: metrics_chip.width
-            height: metrics_chip.height
+            width: iconSize
+            height: iconSize
 
             Rectangle {
                 id: circleMask
@@ -71,7 +73,7 @@ RowLayout {
         
         MaterialSymbol {
             anchors.centerIn: parent
-            iconSize: 18
+            iconSize: root.iconSize - 4
             text: root.icon
             color: secondaryColor
         }
