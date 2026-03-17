@@ -117,6 +117,7 @@ ApplicationWindow {
             anchors.fill: parent
             hoverEnabled: true
 
+            cursorShape: Qt.PointingHandCursor
             onEntered: wpPreview.showWPPickOverlay = true
             onExited: wpPreview.showWPPickOverlay = false
             onClicked: {
