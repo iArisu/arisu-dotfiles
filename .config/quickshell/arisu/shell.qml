@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 
 
+import qs.modules.settings // See rules.conf
 import qs.services
 import qs.modules.arisu.bar
 import qs.modules.external.overview.modules.overview
@@ -22,7 +23,8 @@ ShellRoot {
         repeat: true
         onTriggered: Config.topbar_detached = !Config.topbar_detached
     }*/
-
     RoundedCorners {}
     Bar {}
+
+    Settings {} // See rules.conf
 }
