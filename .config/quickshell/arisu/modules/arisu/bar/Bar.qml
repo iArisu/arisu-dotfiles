@@ -144,16 +144,34 @@ PanelWindow {
                         icon: "memory"
                     }
 
-                    Rectangle { width: 1; height: 16; color: Appearance.colMuted }
+                    
+                    Rectangle {
+                        width: 1;
+                        height: 16;
+                        visible: SystemTray.items.values.length > 0 ? 1 : 0
+                        color: Appearance.colMuted
+                    }
 
                     Row {
                         spacing: 10
+                        visible: width > 0
+                            
                         Repeater {
                             model: SystemTray.items
 
                             delegate: Item {
                                 width: 24
                                 height: 24
+                                opacity: 0
+
+                                Component.onCompleted: {
+                                    opacity = 1
+                                }
+
+                                Behavior on opacity {
+                                    NumberAnimation { duration: 250; easing.type: Easing.InOutQuad }
+                                }
+                                
                                 Image {
                                     anchors.fill: parent
                                     anchors.centerIn: parent
@@ -205,7 +223,6 @@ PanelWindow {
                         iconSize: 22
                         Layout.rightMargin: 12
                         onClicked: function onClicked() {
-                            
                         }
                     }
                 }
