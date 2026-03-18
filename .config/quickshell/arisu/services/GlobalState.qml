@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 
+import qs.modules.common.functions
 import qs.services
 
 Singleton {
@@ -16,45 +17,24 @@ Singleton {
     property bool key_workspaceNumberLongPress: false
 
     
-    
+
     property int wschooser_selected_ws: Hyprland.focusedWorkspace?.id ?? 1
     property int wschooser_ws_page: Math.trunc((root.wschooser_selected_ws - 1) / Config.wschooser_ws_per_page)
 
 
-    Timer {
-        id: holdTimer
-        interval: 150
-        running: false
-        repeat: false
-        onTriggered: {
-            if (root.key_workspaceNumber) {
-                root.key_workspaceNumberLongPress = true
-            } else {
-                root.key_workspaceNumberLongPress = false
-            }
-        }
-    }
-
-
-    GlobalShortcut {
+    AgedGlobalShortcut {
         name: "workspaceNumber"
         description: "Hold to show workspace numbers, release to show icons"
+        holdDuration: 150
 
-        onPressed: {
-            root.key_workspaceNumber = true
-            holdTimer.running = true
-        }
+        onPressed: root.key_workspaceNumber = true;
+        onLongPressed: root.key_workspaceNumberLongPress = true;
 
         onReleased: {
-            const openFuzzel = root.key_workspaceNumber && !root.key_workspaceNumberLongPress;
-            
-            holdTimer.running = false
-            root.key_workspaceNumber = false
-            root.key_workspaceNumberLongPress = false
-
-            if (openFuzzel) {
-                Quickshell.execDetached(["sh", "-c", "pkill fuzzel || fuzzel"]);
-            }
+            root.key_workspaceNumber = false;
+            root.key_workspaceNumberLongPress = false;
         }
+
+        onShortReleased: Quickshell.execDetached(["sh", "-c", "pkill fuzzel || fuzzel"]);
     }
 }

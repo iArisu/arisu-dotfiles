@@ -7,9 +7,13 @@ import QtQuick.Controls
 
 
 import qs.modules.settings // See rules.conf
-import qs.services
-import qs.modules.arisu.bar
+
+// TODO: get rid of Overview module?
 import qs.modules.external.overview.modules.overview
+
+import qs.modules.arisu.bar
+import qs.services
+
 
 ShellRoot {
     id: root
