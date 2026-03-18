@@ -220,7 +220,7 @@ PanelWindow {
                     
                     ButtonChip {
                         icon: "restart_alt"
-                        iconSize: 22
+                        iconSize: 20
                         Layout.rightMargin: 12
                         onClicked: function onClicked() {
                         }

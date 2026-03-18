@@ -44,10 +44,17 @@ Singleton {
             root.key_workspaceNumber = true
             holdTimer.running = true
         }
+
         onReleased: {
+            const openFuzzel = root.key_workspaceNumber && !root.key_workspaceNumberLongPress;
+            
             holdTimer.running = false
             root.key_workspaceNumber = false
             root.key_workspaceNumberLongPress = false
+
+            if (openFuzzel) {
+                Quickshell.execDetached(["sh", "-c", "pkill fuzzel || fuzzel"]);
+            }
         }
     }
 }
