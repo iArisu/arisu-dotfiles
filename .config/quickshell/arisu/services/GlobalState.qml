@@ -13,7 +13,9 @@ Singleton {
     id: root
     
     
+    // TODO: fix conflict with MOD+Q (close) and other MOD+... binds
     property bool key_workspaceNumber: false
+    property int key_workspaceNumber_pressstartwk: -1
     property bool key_workspaceNumberLongPress: false
 
     
@@ -25,16 +27,26 @@ Singleton {
     AgedGlobalShortcut {
         name: "workspaceNumber"
         description: "Hold to show workspace numbers, release to show icons"
-        holdDuration: 150
+        holdDuration: 200 // allow slow pcs
 
-        onPressed: root.key_workspaceNumber = true;
-        onLongPressed: root.key_workspaceNumberLongPress = true;
+        onPressed: {
+            root.key_workspaceNumber = true;
+            root.key_workspaceNumber_pressstartwk = Hyprland.focusedWorkspace?.id;
+        }
+        onLongPressed: {
+            root.key_workspaceNumberLongPress = true;
+        }
 
         onReleased: {
             root.key_workspaceNumber = false;
             root.key_workspaceNumberLongPress = false;
         }
 
-        onShortReleased: Quickshell.execDetached(["sh", "-c", "pkill fuzzel || fuzzel"]);
+        onShortReleased: {
+            // don't show if it was a ninja-grade workspace switch
+            if (root.key_workspaceNumber_pressstartwk == Hyprland.focusedWorkspace?.id) {
+                Quickshell.execDetached(["sh", "-c", "pkill fuzzel || fuzzel"]);
+            }
+        }
     }
 }
