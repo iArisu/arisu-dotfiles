@@ -22,8 +22,8 @@ PanelWindow {
 
     aboveWindows: false
 
-    height: Screen.height
-    width: Screen.width
+    implicitHeight: Screen.height
+    implicitWidth: Screen.width
     
     anchors.top: true
     anchors.left: true
