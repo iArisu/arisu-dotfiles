@@ -17,19 +17,22 @@ import qs.services
 PanelWindow {
     id: root
 
+    readonly property int _barHeight: 40
     property real _targetY: Config.topbar_detached ? 10 : 0
 
-    implicitHeight: 40
-    aboveWindows: false
+    aboveWindows: true
 
     anchors.top: true
     anchors.left: true
     anchors.right: true
+    //anchors.bottom: true
 
     margins.top: Animations.nearQML(root._targetY)
     margins.left: 0
     margins.right: 0
     margins.bottom: 0
+    exclusionMode: ExclusionMode.Normal
+    exclusiveZone: _barHeight
 
     color: "transparent"
 
@@ -37,178 +40,191 @@ PanelWindow {
         NumberAnimation { duration: 50; easing.type: Easing.InOutQuad; }
     }
 
-
-    Item {
+    Column {
         property real targetMargin: Config.topbar_detached ? 10 : 0
 
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
         anchors.leftMargin: Animations.nearQML(targetMargin)
         anchors.rightMargin: Animations.nearQML(targetMargin)
         anchors.topMargin: 0
         anchors.bottomMargin: 0
 
+        height: _barHeight
+        width: Screen.width
+
         Behavior on targetMargin {
             NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
         }
 
-        
-        Rectangle {
-            property real targetCornerRadius: Config.topbar_detached ? 64 : 0
+        Item {
+            //anchors.fill: parent
+            height: _barHeight
+            anchors.left: parent.left
+            anchors.right: parent.right
             
-            anchors.centerIn: parent //padding
-            anchors.fill: parent
-
-            radius: Animations.nearQML(targetCornerRadius)
-            color: Appearance.topbar_bg
-
-            Behavior on targetCornerRadius {
-                NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
-            }
-        }
-        
-        Item {            
-            anchors.fill: parent
-            anchors.leftMargin: 0
-            anchors.rightMargin: 0
-            anchors.topMargin: 0
-            anchors.bottomMargin: 0
-
             Rectangle {
-                anchors.fill: parent
+                property real targetCornerRadius: Config.topbar_detached ? 64 : 0
+                
                 anchors.centerIn: parent //padding
-                color: "transparent"
-                z: 1
+                anchors.fill: parent
+
+                radius: Animations.nearQML(targetCornerRadius)
+                color: Appearance.topbar_bg
+
+                Behavior on targetCornerRadius {
+                    NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+                }
+            }
             
-                RowLayout {
-                    id: wkSelector
-                    
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.margins: 4
-                    
-                    height: parent.height
-                    spacing: 0
+            Item {            
+                anchors.fill: parent
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
 
-                    Item {
-                        Layout.leftMargin: 16
-                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.centerIn: parent //padding
+                    color: "transparent"
+                    z: 1
+                
+                    RowLayout {
+                        id: wkSelector
+                        
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.margins: 4
+                        
+                        height: parent.height
+                        spacing: 0
+
+                        Item {
+                            Layout.leftMargin: 16
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                            Layout.fillHeight: true
+
+                            WorkspaceLabel {}
+                        }
+                    }
+
+
+                    RowLayout {
+                        anchors.centerIn: parent
+                        spacing: 0
+                        WorkspaceChooser {
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        }
+                    }
+
+                    RowLayout {
+                        id: rightBar
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                         Layout.fillHeight: true
-
-                        WorkspaceLabel {}
-                    }
-                }
-
-
-                RowLayout {
-                    anchors.centerIn: parent
-                    spacing: 0
-                    WorkspaceChooser {
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    }
-                }
-
-                RowLayout {
-                    id: rightBar
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    Layout.fillHeight: true
-                    spacing: 12
-                    
-                    MetricsChip {
-                        percentage: ResourceUsage.cpuUsage
-                        icon: "earthquake"
-                    }
+                        spacing: 12
+                        
+                        MetricsChip {
+                            percentage: ResourceUsage.cpuUsage
+                            icon: "earthquake"
+                        }
 
 
-                    MetricsChip {
-                        percentage: ResourceUsage.memoryUsedPercentage
-                        icon: "memory"
-                    }
+                        MetricsChip {
+                            percentage: ResourceUsage.memoryUsedPercentage
+                            icon: "memory"
+                        }
 
-                    
-                    Rectangle {
-                        width: 1;
-                        height: 16;
-                        visible: SystemTray.items.values.length > 0 ? 1 : 0
-                        color: Appearance.colMuted
-                    }
+                        
+                        Rectangle {
+                            width: 1;
+                            height: 16;
+                            visible: SystemTray.items.values.length > 0 ? 1 : 0
+                            color: Appearance.colMuted
+                        }
 
-                    Row {
-                        spacing: 10
-                        visible: width > 0
-                            
-                        Repeater {
-                            model: SystemTray.items
-
-                            delegate: Item {
-                                width: 24
-                                height: 24
-                                opacity: 0
-
-                                Component.onCompleted: {
-                                    opacity = 1
-                                }
-
-                                Behavior on opacity {
-                                    NumberAnimation { duration: 250; easing.type: Easing.InOutQuad }
-                                }
+                        Row {
+                            spacing: 10
+                            visible: width > 0
                                 
-                                Image {
-                                    anchors.fill: parent
-                                    anchors.centerIn: parent
+                            Repeater {
+                                model: SystemTray.items
 
-                                    source: modelData.icon
-                                    sourceSize.width: width
-                                    sourceSize.height: height
-                                    
-                                    cache: false // up to debate 
-                                    visible: true
+                                delegate: Item {
+                                    width: 24
+                                    height: 24
+                                    opacity: 0
 
-                                    layer.enabled: true
-                                    layer.effect: ColorTintEffect {
-                                        tint: Appearance.sysTray_icon_tint
-                                        enabled_force: 0.4
+                                    Component.onCompleted: {
+                                        opacity = 1
                                     }
-                                }
 
-                                MouseArea {
-                                    anchors.fill: parent
-                                    onClicked: {
-                                        Qt.callLater(() => modelData.activate()) // up to debate
+                                    Behavior on opacity {
+                                        NumberAnimation { duration: 250; easing.type: Easing.InOutQuad }
+                                    }
+                                    
+                                    Image {
+                                        anchors.fill: parent
+                                        anchors.centerIn: parent
+
+                                        source: modelData.icon
+                                        sourceSize.width: width
+                                        sourceSize.height: height
+                                        
+                                        cache: false // up to debate 
+                                        visible: true
+
+                                        layer.enabled: true
+                                        layer.effect: ColorTintEffect {
+                                            tint: Appearance.sysTray_icon_tint
+                                            enabled_force: 0.4
+                                        }
+                                    }
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            Qt.callLater(() => modelData.activate()) // up to debate
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    Rectangle { width: 1; height: 16; color: Appearance.colMuted }
+                        Rectangle { width: 1; height: 16; color: Appearance.colMuted }
 
-                    JapaneseDate {}
+                        JapaneseDate {}
 
-                    Rectangle { width: 1; height: 16; color: Appearance.colMuted }
+                        Rectangle { width: 1; height: 16; color: Appearance.colMuted }
 
-                    /*PerformancePopup {
-                        rootWindow: root
-                    }*/
+                        //PerformancePopup {
+                        //    rootWindow: root
+                        //}
 
-                    ButtonChip {
-                        icon: "settings"
-                        Layout.rightMargin: -6
-                        onClicked: function onClicked() {
-                            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("settings.qml")]);
+                        ButtonChip {
+                            icon: "settings"
+                            Layout.rightMargin: -6
+                            onClicked: function onClicked() {
+                                Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("settings.qml")]);
+                            }
                         }
-                    }
-                    
-                    ButtonChip {
-                        icon: "restart_alt"
-                        iconSize: 20
-                        Layout.rightMargin: 12
-                        onClicked: function onClicked() {
+                        
+                        ButtonChip {
+                            icon: "restart_alt"
+                            iconSize: 20
+                            Layout.rightMargin: 12
+                            onClicked: function onClicked() {
+                            }
                         }
                     }
                 }
             }
         }
+        
+        RoundedCorners {}
     }
 }

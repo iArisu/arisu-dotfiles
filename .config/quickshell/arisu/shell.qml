@@ -27,7 +27,6 @@ ShellRoot {
         repeat: true
         onTriggered: Config.topbar_detached = !Config.topbar_detached
     }*/
-    RoundedCorners {}
     Bar {}
 
     //Settings {} // See rules.conf

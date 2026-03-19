@@ -4,24 +4,13 @@ import Qt5Compat.GraphicalEffects
 
 import qs.services
 
-PanelWindow {
+Rectangle {
     id: root
     implicitHeight: Screen.height
     implicitWidth: Screen.width
-    aboveWindows: false
     
-    anchors {
-        top: true
-        left: true
-        right: true
-        bottom: true
-    }
-    margins {
-        left: 0
-        top: 0
-        right: 0
-        bottom: 0
-    }
+    anchors.margins: 0
+
     color: "transparent"
 
 

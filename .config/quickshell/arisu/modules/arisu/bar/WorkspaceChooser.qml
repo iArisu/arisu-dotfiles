@@ -143,6 +143,24 @@ Item {
                         enabled_force: 1
                         disabled_force: 0.8
                     }
+
+                    property bool _hovered: false
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: _hovered = true
+                        onExited: _hovered = false
+                    }
+                    
+                    /*Item {
+                        y: 100
+                        z: 10
+                        parent: null
+                        ToolTip {
+                            visible: true
+                            text: `Heyy`
+                        }
+                    }*/
                 }
                 
                 MouseArea {
