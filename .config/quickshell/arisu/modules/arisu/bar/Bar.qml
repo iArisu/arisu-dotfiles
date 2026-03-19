@@ -22,6 +22,9 @@ PanelWindow {
 
     aboveWindows: false
 
+    height: Screen.height
+    width: Screen.width
+    
     anchors.top: true
     anchors.left: true
     anchors.right: true
@@ -40,7 +43,7 @@ PanelWindow {
         NumberAnimation { duration: 50; easing.type: Easing.InOutQuad; }
     }
 
-    Column {
+    ColumnLayout {
         property real targetMargin: Config.topbar_detached ? 10 : 0
 
         anchors.top: parent.top
@@ -51,9 +54,9 @@ PanelWindow {
         anchors.rightMargin: Animations.nearQML(targetMargin)
         anchors.topMargin: 0
         anchors.bottomMargin: 0
+        anchors.fill: parent
 
-        height: _barHeight
-        width: Screen.width
+        spacing: 0
 
         Behavior on targetMargin {
             NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
@@ -62,8 +65,7 @@ PanelWindow {
         Item {
             //anchors.fill: parent
             height: _barHeight
-            anchors.left: parent.left
-            anchors.right: parent.right
+            Layout.fillWidth: true
             
             Rectangle {
                 property real targetCornerRadius: Config.topbar_detached ? 64 : 0
@@ -225,6 +227,9 @@ PanelWindow {
             }
         }
         
-        RoundedCorners {}
+        RoundedCorners {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        }
     }
 }

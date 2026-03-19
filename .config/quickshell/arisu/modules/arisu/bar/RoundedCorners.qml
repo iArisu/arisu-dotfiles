@@ -6,10 +6,9 @@ import qs.services
 
 Rectangle {
     id: root
-    implicitHeight: Screen.height
-    implicitWidth: Screen.width
     
-    anchors.margins: 0
+    height: Screen.height
+    width: Screen.width
 
     color: "transparent"
 
@@ -30,8 +29,8 @@ Rectangle {
         layer.effect: OpacityMask {
             invert: true
             maskSource: Rectangle {
-                width: Screen.width
-                height: Screen.height
+                width: root.width
+                height: root.height
                 radius: bgRect.targetRadius
                 color: "white"
             }
