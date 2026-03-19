@@ -59,7 +59,7 @@ Singleton {
         const windowsInThisWorkspace = HyprlandData.windowList.filter(w => w.workspace.id == workspaceId);
         const topLevel = Hyprland.activeToplevel;
 
-        const active = windowsInThisWorkspace.find(w => w.address == `0x${topLevel.address}`);
+        const active = windowsInThisWorkspace.find(w => w?.address == `0x${topLevel?.address}`);
         if (active) {
             return active;
         }
