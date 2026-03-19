@@ -13,6 +13,9 @@ import qs.services
 Item {
     id: root
 
+    property int _selected_ws: Hyprland.focusedWorkspace?.id ?? 1
+    property int _workspace_page: Math.trunc(((Hyprland.focusedWorkspace?.id ?? 1) - 1) / Config.wschooser_ws_per_page)
+
     implicitHeight: wkRow.implicitHeight + 4
     implicitWidth: wkRow.implicitWidth + 4
 
@@ -32,7 +35,7 @@ Item {
         color: Appearance.colWorkspaceSwitcher_active_bg
 
         y: (parent.height - height) / 2
-        x: ((GlobalState.wschooser_selected_ws - 1) % Config.wschooser_ws_per_page) * 28 + 2 // padding, see Item implicitWidth+4
+        x: ((root._selected_ws - 1) % Config.wschooser_ws_per_page) * 28 + 2 // padding, see Item implicitWidth+4
 
 
         Behavior on x {
@@ -60,11 +63,11 @@ Item {
             Item {
                 id: wsBox
                 required property int index
-                property int realIndex: index + GlobalState.wschooser_ws_page * Config.wschooser_ws_per_page
+                property int realIndex: index + root._workspace_page * Config.wschooser_ws_per_page
                 
                 property var biggestWindow: HyprlandData.biggestWindowForWorkspace(realIndex + 1)
 
-                property bool active: GlobalState.wschooser_selected_ws === (index + 1)
+                property bool active: root._selected_ws === (index + 1)
                 property bool longPress: GlobalState.key_workspaceNumberLongPress
                 
                 width: 24

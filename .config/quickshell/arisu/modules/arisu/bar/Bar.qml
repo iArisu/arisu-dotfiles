@@ -17,8 +17,7 @@ import qs.services
 PanelWindow {
     id: root
 
-    readonly property Toplevel activeWindow: ToplevelManager.activeToplevel
-    property real targetY: Config.topbar_detached ? 10 : 0
+    property real _targetY: Config.topbar_detached ? 10 : 0
 
     implicitHeight: 40
     aboveWindows: false
@@ -27,14 +26,14 @@ PanelWindow {
     anchors.left: true
     anchors.right: true
 
-    margins.top: Animations.nearQML(targetY)
+    margins.top: Animations.nearQML(root._targetY)
     margins.left: 0
     margins.right: 0
     margins.bottom: 0
 
     color: "transparent"
 
-    Behavior on targetY {
+    Behavior on _targetY {
         NumberAnimation { duration: 50; easing.type: Easing.InOutQuad; }
     }
 
@@ -95,24 +94,7 @@ PanelWindow {
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         Layout.fillHeight: true
 
-                        Column {
-                            anchors.verticalCenter: parent.verticalCenter
-                            height: parent.height
-                            spacing: -4
-                            //anchors.centerIn: parent
-                            Text {
-                                text: StringTrim.ellipsis(root.activeWindow?.appId ?? "", 64)
-                                color: "gray"
-                                font.bold: true
-                            }
-
-                            Text {
-                                text: StringTrim.ellipsis(root.activeWindow?.title ?? "", 70)
-                                color: "white"
-                                font.pixelSize: 14
-                                verticalAlignment: Text.AlignTop
-                            }
-                        }
+                        WorkspaceLabel {}
                     }
                 }
 
