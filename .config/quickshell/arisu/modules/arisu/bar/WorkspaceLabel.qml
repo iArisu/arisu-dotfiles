@@ -9,9 +9,11 @@ import qs.services
 
 Column {
     id: root
+    readonly property Toplevel _topLevel: ToplevelManager.activeToplevel
+
     readonly property var _focusedWorkspace: Hyprland.focusedWorkspace?.id
     readonly property var _activeWindow: _focusedWorkspace ? (
-        HyprlandData.activeWindowForWorkspaceOrBiggest(_focusedWorkspace) ?? _emptyWorkspaceWindow
+        HyprlandData.biggestWindowForWorkspace(_focusedWorkspace) ? _topLevel : _emptyWorkspaceWindow
     ) : _emptyWorkspaceWindow
 
     readonly property var _emptyWorkspaceWindow: {
@@ -24,7 +26,7 @@ Column {
     spacing: -4
     //anchors.centerIn: parent
     Text {
-        text: StringTrim.ellipsis(root._activeWindow?.class ?? " ", 64)
+        text: StringTrim.ellipsis(root._activeWindow?.class ?? root._activeWindow?.appId ?? " ", 64)
         color: "gray"
         font.bold: true
     }

@@ -20,7 +20,7 @@ PanelWindow {
     readonly property int _barHeight: 40
     property real _targetY: Config.topbar_detached ? 10 : 0
 
-    aboveWindows: true
+    aboveWindows: false
 
     anchors.top: true
     anchors.left: true

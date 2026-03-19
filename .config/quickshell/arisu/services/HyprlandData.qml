@@ -55,21 +55,6 @@ Singleton {
         }, null);
     }
 
-    function activeWindowForWorkspaceOrBiggest(workspaceId) {
-        const windowsInThisWorkspace = HyprlandData.windowList.filter(w => w.workspace.id == workspaceId);
-        const topLevel = Hyprland.activeToplevel;
-
-        const active = windowsInThisWorkspace.find(w => w?.address == `0x${topLevel?.address}`);
-        if (active) {
-            return active;
-        }
-
-        return windowsInThisWorkspace.reduce((maxWin, win) => {
-            const maxArea = (maxWin?.size?.[0] ?? 0) * (maxWin?.size?.[1] ?? 0);
-            const winArea = (win?.size?.[0] ?? 0) * (win?.size?.[1] ?? 0);
-            return winArea > maxArea ? win : maxWin;
-        }, null);
-    }
 
     Component.onCompleted: {
         updateAll();
